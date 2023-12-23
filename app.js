@@ -2,12 +2,42 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
-
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
+
+
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
+app.get('/goha', (req, res) => {
+  request(
+    { url: 'https://www.goha.ru/rss/news' },
+    (error, response, body) => {
+      if (error || response.statusCode !== 200) {
+        return res.status(500).json({ type: 'error', message:
+      err.message })
+    }
+    
+    res.set('Content-Type', 'application/rss+xml')
+    res.send(Buffer.from(body))
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 const html = `
 <!DOCTYPE html>
@@ -58,4 +88,4 @@ const html = `
     </section>
   </body>
 </html>
-`
+
