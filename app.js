@@ -12,10 +12,11 @@ app.get('/rss', (req, res) => {
     { url: 'https://www.goha.ru/rss/news' },
     (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        return res.status(500).json({ type: 'error', message: err.message })
+        return res.status(500).json({ type: 'error', message: error.message })
       }
       res.set('Content-Type', 'application/rss+xml')
       res.send(Buffer.from(body))
+      console.log(body)
     }
   )
 })
