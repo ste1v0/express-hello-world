@@ -1,4 +1,5 @@
 const express = require("express");
+const request = require('request');
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -13,13 +14,12 @@ app.get('/goha', (req, res) => {
     { url: 'https://www.goha.ru/rss/news' },
     (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        return res.status(500).json({ type: 'error', message:
-      err.message })
-    }
+        return res.status(500).json({ type: 'error', message: error.message })
+      }
     
-    res.set('Content-Type', 'application/rss+xml')
-    res.send(Buffer.from(body))
-  })
+      res.set('Content-Type', 'application/rss+xml')
+      res.send(Buffer.from(body))
+    })
 })
 
 
